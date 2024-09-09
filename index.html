@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    body {
+        background-color:black;
+        font-family: "Arial";
+        margin:0;
+    }
+
+    .box {
+        background-color:white;
+        min-width:250px;
+        min-height:250px;
+        margin:20px;
+        border-radius:7px;
+    }
+
+    .item {
+        background-color:red;
+        width:50px;
+        height:50px;
+
+        margin: 10px;
+    }
+
+    #container {
+        display:flex;
+        flex-wrap: wrap;
+    }
+</style>
+<body>
+    <div id="container">
+        <div id="box0" class="box">
+            <div id="item0" class="item" draggable="true">box</div>
+        </div>
+        <div id="box1" class="box"></div>
+        <div id="box2" class="box"></div>
+    </div>
+    <script>
+         // Seleciona o item que pode ser arrastado
+    const item = document.getElementById('item0');
+    
+    // Adiciona os eventos de dragstart e dragend ao item arrastável
+    item.addEventListener('dragstart', function (e) {
+        e.dataTransfer.setData('id', e.target.id);
+    });
+
+    // Seleciona todas as caixas onde o item pode ser solto
+    const boxes = document.querySelectorAll('.box');
+
+    boxes.forEach(box => {
+        // Prevenir o comportamento padrão de não permitir o drop
+        box.addEventListener('dragover', function (e) {
+            e.preventDefault();
+        });
+
+        // Definir o que acontece quando o item é solto em uma das caixas
+        box.addEventListener('drop', function (e) {
+            e.preventDefault();
+            const data = e.dataTransfer.getData('id');
+            const draggableElement = document.getElementById(data);
+            e.target.appendChild(draggableElement);
+        });
+    });
+
+    </script>
+</body>
+</html>
